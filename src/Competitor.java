@@ -1,8 +1,11 @@
+import java.util.Arrays;
+
 public abstract class Competitor {
     private int competitorNumber;
     private CompetitorName competitorName;
     private String level;
     private String country;
+    private int[] scores;
 
     public Competitor(int competitorNumber, CompetitorName competitorName, String level, String country) {
         this.competitorNumber = competitorNumber;
@@ -43,6 +46,14 @@ public abstract class Competitor {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    protected int[] getScores() {
+        return scores;
+    }
+
+    public void setScores(int[] scores) {
+        this.scores = scores;
     }
 
     public String getFullDetails() {

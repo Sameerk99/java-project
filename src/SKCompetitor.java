@@ -1,67 +1,51 @@
 import java.util.Arrays;
 
-public class SKCompetitor {
-    // Instance variable: array of 5 integer scores
-    private int[] scores = new int[5];
-
-    // Other instance variables (assuming similar to Competitor class)
-    private int competitorNumber;
-    private CompetitorName competitorName;
-    private String level;
-    private String country;
+public class SKCompetitor extends Competitor {
 
     // Constructor
     public SKCompetitor(int competitorNumber, CompetitorName competitorName, String level, String country, int[] scores) {
-        this.competitorNumber = competitorNumber;
-        this.competitorName = competitorName;
-        this.level = level;
-        this.country = country;
-        this.scores = scores;
+        super(competitorNumber, competitorName, level, country);
+        setScores(scores);
     }
 
-    // Getter method for competitor number
-    public int getCompetitorNumber() {
-        return competitorNumber;
-    }
-
-    // Getter method for scores
-    public int[] getScoreArray() {
-        return scores;
-    }
-
-    // Calculate overall score from the array of integer scores
+    // Override the abstract method in the Competitor class
+    @Override
     public double getOverallScore() {
-        if (scores.length < 3) {
+        if (getScores().length < 3) {
             throw new IllegalArgumentException("At least 3 scores are required to calculate overall score.");
         }
 
         // Sort the scores to disregard the highest and lowest
-        Arrays.sort(scores);
+        int[] sortedScores = Arrays.copyOf(getScores(), getScores().length);
+        Arrays.sort(sortedScores);
 
         // Calculate the sum of middle scores
         int sum = 0;
-        for (int i = 1; i < scores.length - 1; i++) {
-            sum += scores[i];
+        for (int i = 1; i < sortedScores.length - 1; i++) {
+            sum += sortedScores[i];
         }
 
         // Calculate the average
-        return (double) sum / (scores.length - 2);
+        return (double) sum / (sortedScores.length - 2);
     }
 
-    // Get short details including competitor number, initials, and overall score
+    // Override the getShortDetails method in the Competitor class
+    @Override
     public String getShortDetails() {
         String initials = getInitials();
-        return "CN " + competitorNumber + " (" + initials + ") has overall score " + String.valueOf(getOverallScore()) + ".";
+        return "CN " + getCompetitorNumber() + " (" + initials + ") has overall score " + String.valueOf(getOverallScore()) + ".";
     }
+
+    // Additional methods specific to SKCompetitor can be added here
 
     // Helper method to get initials from the first and last name
     private String getInitials() {
-        if (competitorName == null) {
+        if (getCompetitorName() == null) {
             return "";
         }
 
-        String firstName = competitorName.getFirstName();
-        String lastName = competitorName.getLastName();
+        String firstName = getCompetitorName().getFirstName();
+        String lastName = getCompetitorName().getLastName();
 
         // Ensure non-empty strings before getting initials
         char firstInitial = (firstName.length() > 0) ? firstName.charAt(0) : ' ';
@@ -70,15 +54,9 @@ public class SKCompetitor {
         return String.valueOf(firstInitial) + String.valueOf(lastInitial);
     }
 
-    // Get full details including all scores
-    public String getFullDetails() {
-        return "Competitor number " + competitorNumber + ", name " + competitorName.getFullName() +
-                ", country " + country + ". " + competitorName.getFirstName() + " is a " + level +
-                " aged " + competitorName.getAge() + " and received these scores: " +
-                Arrays.toString(scores) + "\nThis gives him an overall score of " + getOverallScore() + ".";
+    public int[] getScoreArray() {
+        return getScores();
     }
-
-
 
     // Main method for testing
     public static void main(String[] args) {
@@ -90,7 +68,7 @@ public class SKCompetitor {
 
         // Test methods
         System.out.println("Competitor Number: " + skCompetitor.getCompetitorNumber());
-        System.out.println("Scores: " + Arrays.toString(skCompetitor.getScoreArray()));
+        System.out.println("Scores: " + Arrays.toString(skCompetitor.getScores()));
         System.out.println("Overall Score: " + skCompetitor.getOverallScore());
         System.out.println(skCompetitor.getFullDetails());
     }
