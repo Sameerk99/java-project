@@ -19,6 +19,11 @@ public class SKCompetitor {
         this.scores = scores;
     }
 
+    // Getter method for competitor number
+    public int getCompetitorNumber() {
+        return competitorNumber;
+    }
+
     // Getter method for scores
     public int[] getScoreArray() {
         return scores;
@@ -43,6 +48,28 @@ public class SKCompetitor {
         return (double) sum / (scores.length - 2);
     }
 
+    // Get short details including competitor number, initials, and overall score
+    public String getShortDetails() {
+        String initials = getInitials();
+        return "CN " + competitorNumber + " (" + initials + ") has overall score " + String.valueOf(getOverallScore()) + ".";
+    }
+
+    // Helper method to get initials from the first and last name
+    private String getInitials() {
+        if (competitorName == null) {
+            return "";
+        }
+
+        String firstName = competitorName.getFirstName();
+        String lastName = competitorName.getLastName();
+
+        // Ensure non-empty strings before getting initials
+        char firstInitial = (firstName.length() > 0) ? firstName.charAt(0) : ' ';
+        char lastInitial = (lastName.length() > 0) ? lastName.charAt(0) : ' ';
+
+        return String.valueOf(firstInitial) + String.valueOf(lastInitial);
+    }
+
     // Get full details including all scores
     public String getFullDetails() {
         return "Competitor number " + competitorNumber + ", name " + competitorName.getFullName() +
@@ -50,6 +77,8 @@ public class SKCompetitor {
                 " aged " + competitorName.getAge() + " and received these scores: " +
                 Arrays.toString(scores) + "\nThis gives him an overall score of " + getOverallScore() + ".";
     }
+
+
 
     // Main method for testing
     public static void main(String[] args) {
@@ -60,6 +89,7 @@ public class SKCompetitor {
         SKCompetitor skCompetitor = new SKCompetitor(100, competitorName, "Beginner", "UK", new int[]{5, 4, 5, 4, 3});
 
         // Test methods
+        System.out.println("Competitor Number: " + skCompetitor.getCompetitorNumber());
         System.out.println("Scores: " + Arrays.toString(skCompetitor.getScoreArray()));
         System.out.println("Overall Score: " + skCompetitor.getOverallScore());
         System.out.println(skCompetitor.getFullDetails());
